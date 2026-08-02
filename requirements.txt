@@ -1,0 +1,6 @@
+nltk
+requests
+feedparser
+pillow
+google
+google-genai
