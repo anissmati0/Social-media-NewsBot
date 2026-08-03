@@ -9,8 +9,8 @@ from content.post_generator import create_post
 file_path = "data/articles.json"
 
 def run_pipeline_2():
-    now = datetime.now().strftime("%Y-%m-%D_%h-%m-%S")
-
+    now = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+    
     data = []
     try:
         with open(file_path, 'r', encoding= "utf-8") as file:
@@ -23,7 +23,7 @@ def run_pipeline_2():
         print("______________________________________")
         print(data.index(art) + 1)
         print("Title: ", art['title'])
-        print("Summary: ")
+        print("Summary: ", art["summary"])
 
     choice = -1
     while (choice < 0) or (choice > len(data)):
