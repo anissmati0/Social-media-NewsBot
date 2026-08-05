@@ -17,10 +17,10 @@ from config import *
 connect = [GnewsConnector(), newsAPI_connector(), RSS_Connector()]
 stemmer = PorterStemmer()
 
-def fetch_data():
+def fetch_data(query: str):
     results = []
     for connection in connect:
-        results = results + [article for article in connection.fetch_news('Breaking')]
+        results = results + [article for article in connection.fetch_news(query)]
     return results
 
 def handle_keywords(keywords: list):

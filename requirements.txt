@@ -4,3 +4,4 @@ feedparser
 pillow
 google
 google-genai
+python-telegram-bot==21.4

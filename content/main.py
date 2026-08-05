@@ -8,7 +8,7 @@ from content.post_generator import create_post
 
 file_path = "data/articles.json"
 
-def run_pipeline_2():
+def run_pipeline_2(choice):
     now = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
     
     data = []
@@ -19,16 +19,16 @@ def run_pipeline_2():
         print(f"There is problem with opening the file! {e}")
         sys.exit(1)
 
-    for art in data:
-        print("______________________________________")
-        print(data.index(art) + 1)
-        print("Title: ", art['title'])
-        print("Summary: ", art["summary"])
-
-    choice = -1
-    while (choice < 0) or (choice > len(data)):
-        print("\n")
-        choice = int(input("Choose an article: "))
+    #for art in data:
+    #    print("______________________________________")
+    #    print(data.index(art) + 1)
+    #    print("Title: ", art['title'])
+    #    print("Summary: ", art["summary"])
+#
+    #choice = -1
+    #while (choice < 0) or (choice > len(data)):
+    #    print("\n")
+    #    choice = int(input("Choose an article: "))
 
     final_content = [generate_title(data[choice - 1]), generate_summary(data[choice - 1])]
     summary_path = Path("output") / f"{now}" / "description.txt"
