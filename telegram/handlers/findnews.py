@@ -1,5 +1,6 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update
 from telegram.ext import ContextTypes
+from telegram.constants import ParseMode
 import sys, os, json, glob
 sys.modules['nltk.inisec'] = type('mock', (object,), {'find_spec': lambda *args, **kwargs: None})
 
@@ -58,19 +59,22 @@ async def findnews_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) 
         articles = json.load(file)
 
     for index, article in enumerate(articles):
-        title = (article.get('title', 'No Title'), index)
+        title = (article.get('title', 'No Title'))
+        title = (f"<b>Article 0{index + 1}</b>\n"
+                 f"<blockquote>{title}</blockquote>")
         
         # Create an Inline Keyboard with the "Create Post" button
         # Pass a unique callback_data (e.g., using index or article ID) to identify which article was clicked
         keyboard = [
-            [InlineKeyboardButton("Create Post", callback_data=f"{CALLBACK_CREATE_PREFIX}{index}")]
+            [InlineKeyboardButton("Create Post✨", callback_data=f"{CALLBACK_CREATE_PREFIX}{index}")]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
 
         # Send separate message for each article
         await query.message.reply_text(
             text=title,
-            reply_markup=reply_markup
+            reply_markup=reply_markup,
+            parse_mode=ParseMode.HTML
         )
     
 """
@@ -101,9 +105,7 @@ async def handle_create_post(update: Update, context: ContextTypes.DEFAULT_TYPE)
     run_pipeline_2(target_index)
 
     # 2. Find the newest folder matching "YYYY-MM-DD_HH-MM-SS" pattern
-    # Assuming output folders are created in the current working directory or a specific base directory
-    base_dir = "output"  # Change this path if your folders are stored in a specific subfolder
-    
+    base_dir = "output"  
     # Get all directories and find the most recently created one
     all_folders = [
         os.path.join(base_dir, d) for d in os.listdir(base_dir) 
@@ -135,9 +137,8 @@ async def handle_create_post(update: Update, context: ContextTypes.DEFAULT_TYPE)
     with open(image_path, "rb") as photo:
         await query.message.reply_photo(
             photo=photo,
-            caption=caption_text[:1024]  # Telegram caps photo captions at 1024 chars
+            caption=caption_text[:1024]  
         )
 
-    # Optional: If the text exceeds 1024 chars, send the full text or text file separately
     if len(caption_text) > 1024:
         await query.message.reply_text(f"📝 Full Description:\n\n{caption_text}")
